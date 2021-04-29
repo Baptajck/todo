@@ -1,9 +1,15 @@
 import { createContext, useReducer } from "react";
 
-import { ADD_TASK, DELETE_TASK, UPDATE_TASK } from "../types/tasks";
+import {
+  ADD_TASK,
+  DELETE_TASK,
+  UPDATE_TASK,
+  COMPLETED_TASK,
+} from "../types/tasks";
 
 const initialState = {
   tasks: [],
+  complete: [],
 };
 
 const reducer = (state, action) => {
@@ -46,6 +52,23 @@ const reducer = (state, action) => {
       return {
         ...state,
         tasks: [...updatedTodos],
+      };
+    }
+
+    case COMPLETED_TASK: {
+      const { id, title } = action.payload;
+      const updatedTask = state.tasks.filter((task) => task.id !== id);
+
+      const completedTask = {
+        id,
+        title,
+        completed: true,
+      };
+
+      return {
+        ...state,
+        tasks: [...updatedTask],
+        complete: [...state.complete, completedTask],
       };
     }
     default:
