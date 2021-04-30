@@ -5,6 +5,8 @@ import {
   DELETE_TASK,
   UPDATE_TASK,
   COMPLETED_TASK,
+  CHANGE_TASK,
+  BACK_TO_TASK,
 } from "../types/tasks";
 
 const initialState = {
@@ -14,9 +16,25 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case CHANGE_TASK: {
+      const deleteTask = state.tasks.filter(
+        (task) => task.id !== action.payload.id
+      );
+
+      const newTask = {
+        ...action.payload.task[0],
+        realTitle: action.payload.desc.title,
+        description: action.payload.desc.desc,
+      };
+      return {
+        ...state,
+        tasks: [...deleteTask, newTask],
+      };
+    }
+
     case ADD_TASK: {
       const newTask = {
-        id: Math.random().toString(16),
+        id: Math.floor(Math.random() * 100),
         title: action.payload,
         completed: false,
       };
@@ -49,9 +67,30 @@ const reducer = (state, action) => {
       const updatedTodos = state.tasks.filter(
         (task) => task.id !== action.payload
       );
+      const updatedTodosComplete = state.complete.filter(
+        (task) => task.id !== action.payload
+      );
       return {
         ...state,
         tasks: [...updatedTodos],
+        complete: [...updatedTodosComplete],
+      };
+    }
+
+    case BACK_TO_TASK: {
+      const { id, title } = action.payload;
+      const updatedTask = state.complete.filter((task) => task.id !== id);
+
+      const newTask = {
+        id,
+        title,
+        completed: false,
+      };
+
+      return {
+        ...state,
+        tasks: [...state.tasks, newTask],
+        complete: [...updatedTask],
       };
     }
 

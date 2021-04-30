@@ -1,15 +1,24 @@
-button {
-  margin-left: 2rem;
-  padding: 0.3rem;
-  background: #eee;
-  /* border: none; */
+@import "https://bootswatch.com/4/cerulean/bootstrap.min.css";
+
+.show {
+  display: block;
+}
+
+.cardWeather {
+  width: 250px;
+  text-align: center;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+.inputT {
+  width: 30%;
+  margin: auto;
 }
 
 .complete {
   text-decoration: line-through;
-}
-
-.container-todo {
 }
 
 .error {
